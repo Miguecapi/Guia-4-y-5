@@ -1,1 +1,100 @@
+import java.util.Scanner;
+
+public class BonificacionesABC {
+
+    static final int N = 100;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int[] rut = new int[N];
+        float[] sueldo = new float[N];
+        float[] bonificaciones = new float[N];
+        float costoTotalBonificaciones = 0;
+
+        // Ingresar datos del personal
+        System.out.println("Ingrese la cantidad de empleados:");
+        int cantidadEmpleados = scanner.nextInt();
+
+        if (cantidadEmpleados > N) {
+            System.out.println("La cantidad de empleados ingresada supera el limite.");
+            return;
+        }
+
+        System.out.println("Ingrese los sueldos de los empleados:");
+        for (int i = 0; i < cantidadEmpleados; i++) {
+            rut[i] = i + 1; // RUTs numerados secuencialmente
+            sueldo[i] = (float) (1000 + Math.random() * 4000); // Sueldo aleatorio entre 1000 y 5000
+            costoTotalBonificaciones += sueldo[i] * 0.05; // Calcula el costo total de bonificaciones
+        }
+
+        // Calcula las bonificaciones
+        for (int i = 0; i < cantidadEmpleados; i++) {
+            bonificaciones[i] = sueldo[i] * 0.05f;
+        }
+
+        // Mostrar lista de empleados y sus bonificaciones
+        System.out.println("\nLista de empleados y sus bonificaciones:");
+        System.out.println("========================================");
+        for (int i = 0; i < cantidadEmpleados; i++) {
+            System.out.println("Empleado " + rut[i] + ": Sueldo: " + sueldo[i] + " - Bonificacion: " + bonificaciones[i]);
+        }
+        System.out.println("========================================");
+
+        // Encuentra el empleado con la mayor y menor bonificacion
+        encontrarMaxMin(bonificaciones, rut, sueldo, cantidadEmpleados);
+
+        // Muestra el costo total de las bonificaciones
+        System.out.println("\nEl costo total de las bonificaciones es: " + costoTotalBonificaciones);
+
+        // Encuentra un empleado a partir de su RUT
+        System.out.print("\nIngrese el RUT del empleado que desea buscar: ");
+        int rutBuscado = scanner.nextInt();
+        encontrarEmpleado(rutBuscado, rut, sueldo, cantidadEmpleados);
+
+        scanner.close();
+    }
+
+    static void encontrarMaxMin(float[] bonificaciones, int[] rut, float[] sueldo, int cantidadEmpleados) {
+        float maxBonificacion = bonificaciones[0];
+        float minBonificacion = bonificaciones[0];
+        int maxIndex = 0;
+        int minIndex = 0;
+
+        // Encuentra el empleado con la mayor y menor bonificacion
+        for (int i = 1; i < cantidadEmpleados; i++) {
+            if (bonificaciones[i] > maxBonificacion) {
+                maxBonificacion = bonificaciones[i];
+                maxIndex = i;
+            }
+            if (bonificaciones[i] < minBonificacion) {
+                minBonificacion = bonificaciones[i];
+                minIndex = i;
+            }
+        }
+
+        // Muestra los resultados
+        System.out.println("\nEmpleado con la mayor bonificacion:");
+        System.out.println("RUT: " + rut[maxIndex]);
+        System.out.println("Sueldo: " + sueldo[maxIndex]);
+        System.out.println("Bonificacion: " + bonificaciones[maxIndex]);
+
+        System.out.println("\nEmpleado con la menor bonificacion:");
+        System.out.println("RUT: " + rut[minIndex]);
+        System.out.println("Sueldo: " + sueldo[minIndex]);
+        System.out.println("Bonificacion: " + bonificaciones[minIndex]);
+    }
+
+    static void encontrarEmpleado(int rutBuscado, int[] rut, float[] sueldo, int cantidadEmpleados) {
+        for (int i = 0; i < cantidadEmpleados; i++) {
+            if (rut[i] == rutBuscado) {
+                System.out.println("\nEmpleado encontrado:");
+                System.out.println("RUT: " + rut[i]);
+                System.out.println("Sueldo: " + sueldo[i]);
+                System.out.println("Bonificacion: " + sueldo[i] * 0.05);
+                return;
+            }
+        }
+        System.out.println("Empleado con RUT " + rutBuscado + " no encontrado.");
+    }
+}
 
