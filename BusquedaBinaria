@@ -1,0 +1,80 @@
+// Declaración de la clase BusquedaBinaria
+public class BusquedaBinaria {
+
+    // Método principal que se ejecuta al iniciar el programa
+    public static void main(String[] args) {
+        // Se generan arreglos de diferentes tamaños con datos ordenados del 0 al tamaño-1
+        int[] datos100 = generarDatosOrdenados(100);
+        int[] datos1000 = generarDatosOrdenados(1000);
+        int[] datos5000 = generarDatosOrdenados(5000);
+        int[] datos10000 = generarDatosOrdenados(10000);
+        int[] datos100000 = generarDatosOrdenados(100000);
+
+        // Valor que se buscará en los arreglos
+        int valorBuscado = 500;
+
+        // Se realizan las búsquedas binarias en los diferentes arreglos con el valor especificado
+        System.out.println("Busqueda binaria en arreglo de tamaño 100:");
+        realizarBusqueda(datos100, valorBuscado);
+
+        System.out.println("\nBusqueda binaria en arreglo de tamaño 1000:");
+        realizarBusqueda(datos1000, valorBuscado);
+
+        System.out.println("\nBusqueda binaria en arreglo de tamaño 5000:");
+        realizarBusqueda(datos5000, valorBuscado);
+
+        System.out.println("\nBusqueda binaria en arreglo de tamaño 10000:");
+        realizarBusqueda(datos10000, valorBuscado);
+
+        System.out.println("\nBusqueda binaria en arreglo de tamaño 100000:");
+        realizarBusqueda(datos100000, valorBuscado);
+    }
+
+    // Método para realizar la búsqueda binaria en un arreglo de enteros
+    public static void realizarBusqueda(int[] datos, int valorBuscado) {
+        // Se registra el tiempo de inicio de la búsqueda
+        long tiempoInicio = System.nanoTime();
+        // Se realiza la búsqueda binaria y se obtiene el índice donde se encuentra el valor buscado
+        int indice = busquedaBinaria(datos, valorBuscado);
+        // Se registra el tiempo de finalización de la búsqueda
+        long tiempoFin = System.nanoTime();
+
+        // Se imprime el resultado de la búsqueda y el tiempo de ejecución
+        if (indice != -1) {
+            System.out.println("El valor " + valorBuscado + " se encontro en el indice " + indice);
+        } else {
+            System.out.println("El valor " + valorBuscado + " no se encontro en el arreglo.");
+        }
+        System.out.println("Tiempo de ejecucion: " + (tiempoFin - tiempoInicio) + " nanosegundos");
+    }
+
+    // Método para generar un arreglo de datos ordenados del 0 al tamaño-1
+    public static int[] generarDatosOrdenados(int tamano) {
+        int[] datos = new int[tamano];
+        for (int i = 0; i < tamano; i++) {
+            datos[i] = i;
+        }
+        return datos;
+    }
+
+    // Método que implementa el algoritmo de búsqueda binaria en un arreglo ordenado
+    public static int busquedaBinaria(int[] datos, int valorBuscado) {
+        int inicio = 0;
+        int fin = datos.length - 1;
+
+        // Búsqueda binaria iterativa
+        while (inicio <= fin) {
+            int medio = inicio + (fin - inicio) / 2;
+
+            if (datos[medio] == valorBuscado) {
+                return medio; // Se encontró el valor, se devuelve el índice
+            } else if (datos[medio] < valorBuscado) {
+                inicio = medio + 1; // Se descarta la mitad izquierda del arreglo
+            } else {
+                fin = medio - 1; // Se descarta la mitad derecha del arreglo
+            }
+        }
+
+        return -1; // Valor no encontrado
+    }
+}
