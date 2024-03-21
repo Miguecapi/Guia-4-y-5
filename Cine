@@ -1,0 +1,109 @@
+import java.util.Scanner;
+
+public class Cinemax {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String[] nombresPeliculas = {
+            "Avatar", "Avengers: Endgame", "Titanic", "Star Wars: El Despertar de la Fuerza",
+            "Avengers: Infinity War", "Jurassic World", "The Lion King", "The Avengers",
+            "Furious 7", "Frozen", "Beauty and the Beast", "Incredibles 2", "The Fate of the Furious",
+            "Iron Man 3", "Minions"
+        };
+
+        int[][] personasPorPeliculaYSala = {
+            {200, 210, 220, 230, 240, 250, 260},
+            {180, 190, 200, 210, 220, 230, 240},
+            {170, 180, 190, 200, 210, 220, 230},
+            {160, 170, 180, 190, 200, 210, 220},
+            {150, 160, 170, 180, 190, 200, 210},
+            {140, 150, 160, 170, 180, 190, 200},
+            {130, 140, 150, 160, 170, 180, 190},
+            {120, 130, 140, 150, 160, 170, 180},
+            {110, 120, 130, 140, 150, 160, 170},
+            {100, 110, 120, 130, 140, 150, 160},
+            {90, 100, 110, 120, 130, 140, 150},
+            {80, 90, 100, 110, 120, 130, 140},
+            {70, 80, 90, 100, 110, 120, 130},
+            {60, 70, 80, 90, 100, 110, 120},
+            {50, 60, 70, 80, 90, 100, 110}
+        };
+
+        System.out.println("Seleccione una opcion:");
+        System.out.println("1. Mostrar la mejor combinacion sala-pelicula mas vista.");
+        System.out.println("2. Mostrar la pelicula mas vista y la menos vista de todas las salas.");
+        int opcion = scanner.nextInt();
+
+        switch (opcion) {
+            case 1:
+                mostrarMejorCombinacion(personasPorPeliculaYSala, nombresPeliculas);
+                break;
+            case 2:
+                mostrarPeliculasMasYMenosVistas(personasPorPeliculaYSala, nombresPeliculas);
+                break;
+            default:
+                System.out.println("Opcion invalida.");
+        }
+    }
+
+    public static void mostrarMejorCombinacion(int[][] personasPorPeliculaYSala, String[] nombresPeliculas) {
+        int[] mejorCombinacion = mejorCombinacionSalaPelicula(personasPorPeliculaYSala);
+        int salaMasVista = mejorCombinacion[0];
+        int peliculaMasVista = mejorCombinacion[1];
+        String nombrePeliculaMasVista = nombresPeliculas[peliculaMasVista];
+        System.out.println("La mejor combinacion sala-pelicula es la Sala " + (salaMasVista + 1)
+                + " con la Pelicula \"" + nombrePeliculaMasVista + "\"");
+    }
+
+    public static void mostrarPeliculasMasYMenosVistas(int[][] personasPorPeliculaYSala, String[] nombresPeliculas) {
+        calcularPeliculasMasYMenosVistas(personasPorPeliculaYSala, nombresPeliculas);
+    }
+
+    public static int[] mejorCombinacionSalaPelicula(int[][] personasPorPeliculaYSala) {
+        int maxPersonas = Integer.MIN_VALUE;
+        int[] mejorCombinacion = new int[2];
+
+        for (int i = 0; i < personasPorPeliculaYSala.length; i++) {
+            for (int j = 0; j < personasPorPeliculaYSala[i].length; j++) {
+                if (personasPorPeliculaYSala[i][j] > maxPersonas) {
+                    maxPersonas = personasPorPeliculaYSala[i][j];
+                    mejorCombinacion[0] = j; // Sala
+                    mejorCombinacion[1] = i; // Película
+                }
+            }
+        }
+
+        return mejorCombinacion;
+    }
+
+    public static void calcularPeliculasMasYMenosVistas(int[][] personasPorPeliculaYSala, String[] nombresPeliculas) {
+        int maxPersonas = Integer.MIN_VALUE;
+        int minPersonas = Integer.MAX_VALUE;
+        int peliculaMasVista = -1;
+        int peliculaMenosVista = -1;
+
+        for (int i = 0; i < personasPorPeliculaYSala.length; i++) {
+            int totalPersonasPorPelicula = 0;
+            for (int j = 0; j < personasPorPeliculaYSala[i].length; j++) {
+                totalPersonasPorPelicula += personasPorPeliculaYSala[i][j];
+            }
+            if (totalPersonasPorPelicula > maxPersonas) {
+                maxPersonas = totalPersonasPorPelicula;
+                peliculaMasVista = i;
+            }
+            if (totalPersonasPorPelicula < minPersonas) {
+                minPersonas = totalPersonasPorPelicula;
+                peliculaMenosVista = i;
+            }
+        }
+
+        String nombrePeliculaMasVista = nombresPeliculas[peliculaMasVista];
+        String nombrePeliculaMenosVista = nombresPeliculas[peliculaMenosVista];
+
+        System.out.println("La pelicula mas vista de todas las salas es: " + nombrePeliculaMasVista
+                + " con un total de " + maxPersonas + " personas.");
+        System.out.println("La pelicula menos vista de todas las salas es: " + nombrePeliculaMenosVista
+                + " con un total de " + minPersonas + " personas.");
+    }
+}
